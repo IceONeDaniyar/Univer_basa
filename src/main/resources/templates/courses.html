@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{courses.title}">Курсы</title>
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="/" class="logo" th:text="#{university.name}">Университет</a>
+        <ul class="nav-links">
+            <li><a href="/" th:text="#{menu.home}">Главная</a></li>
+            <li><a href="/students" th:text="#{menu.students}">Студенты</a></li>
+            <li><a href="/courses" th:text="#{menu.courses}">Курсы</a></li>
+            <li><a href="/teachers" th:text="#{menu.teachers}">Преподаватели</a></li>
+            <li><a href="/reports" th:text="#{menu.reports}">Отчёты</a></li>
+            <li><a href="/profile" th:text="#{menu.profile}">Профиль</a></li>
+        </ul>
+        
+    </nav>
+    <a th:href="@{/change-lang(lang='ru')}" >🇷🇺 Рус</a> |
+<a th:href="@{/change-lang(lang='en')}" >🇬🇧 Eng</a>
+
+</header>
+
+<main>
+    <h1 th:text="#{courses.list}">Список курсов</h1>
+
+
+    <p th:text="${message}" style="color: green;"></p>
+
+    <table border="1">
+        <tr>
+            <th th:text="#{course.id}">ID</th>
+            <th th:text="#{course.name}">Название курса</th>
+            <th th:text="#{course.students}">Студенты</th>
+            <th th:if="${isAdmin}" th:text="#{actions}">Действия</th>
+        </tr>
+        <tr th:each="courseItem : ${courses}">
+            <td th:text="${courseItem.id}"></td>
+            <td th:text="${courseItem.name}"></td>
+            <td>
+                <ul>
+                    <li th:each="student : ${courseItem.students}" th:text="${student.name}"></li>
+                </ul>
+            </td>
+            <td th:if="${isAdmin}">
+                <a th:href="@{'/courses/edit/' + ${courseItem.id}}" class="button" th:text="#{button.edit}">Редактировать</a> |
+                <a th:href="@{'/courses/delete/' + ${courseItem.id}}"
+                   th:onclick="|return confirm('#{course.confirmDelete}');|"
+                   class="button-red" th:text="#{button.delete}">Удалить</a>
+            </td>
+        </tr>
+    </table>
+
+    <div th:if="${isAdmin}">
+        <h2 th:text="${course.id} != null ? #{course.edit} : #{course.add}">Добавить курс</h2>
+
+        <form th:action="@{${course.id != null} ? '/courses/update' : '/courses'}"
+              th:object="${course}" method="post">
+
+            <input type="hidden" th:if="${course.id != null}" th:field="*{id}" />
+            <input type="text" th:field="*{name}" th:placeholder="#{course.name}" required />
+
+            <label th:text="#{course.students}">Студенты:</label>
+            <select name="studentIds" multiple>
+                <option th:each="student : ${allStudents}"
+                        th:value="${student.id}"
+                        th:text="${student.name}"
+                        th:selected="${course.students.contains(student)}">
+                </option>
+            </select>
+
+            <button type="submit" th:text="${course.id != null} ? #{button.update} : #{button.save}">Сохранить</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

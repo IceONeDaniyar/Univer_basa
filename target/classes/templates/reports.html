@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{books.title}">Список книг</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="#{books.title}">📚 Список загруженных книг</h1>
+
+    <div style="margin-bottom: 15px;">
+        <a href="/" class="button" th:text="#{books.back}">← Назад на главную</a>
+    </div>
+
+    <form method="get" action="/books">
+        <label for="category" th:text="#{books.filterLabel}">Фильтр по категории:</label>
+        <select name="category" id="category">
+            <option value="" th:text="#{books.filterAll}">Все категории</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat}"
+                    th:text="${cat}"
+                    th:selected="${cat == param.category}">Категория</option>
+        </select>
+        <button type="submit" th:text="#{books.apply}">Применить</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th th:text="#{books.table.id}">ID</th>
+                <th th:text="#{books.table.title}">Название</th>
+                <th th:text="#{books.table.uploader}">Преподаватель</th>
+                <th th:text="#{books.table.uploadDate}">Дата загрузки</th>
+                <th th:text="#{books.table.category}">Категория</th>
+                <th th:text="#{books.table.download}">Скачать</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.title}">Название</td>
+            <td th:text="${book.uploader}">Преподаватель</td>
+            <td th:text="${book.uploadDate}">2025-05-22</td>
+            <td th:text="${book.category}">Категория</td>
+            <td>
+                <a th:href="@{'/books/download/' + ${book.id}}" class="button" th:text="#{books.table.download}">Скачать</a>
+                <span th:if="${isAdmin}">
+                    | <a th:href="@{'/books/delete/' + ${book.id}}"
+                        onclick="return confirm('[[#{books.table.deleteConfirm}]]')"
+                        class="button-red" th:text="#{books.button.delete}">Удалить</a>
+
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <span th:if="${isAdmin}">
+            <a class="btn-upload" href="/books/upload" th:text="#{books.button.upload}">⬆ Загрузить новую книгу</a>
+        </span>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.university}">University Info</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="/" class="logo" th:text="#{nav.logo}">Университет</a>
+            <ul class="nav-links">
+                <li><a href="/" th:text="#{nav.home}">Главная</a></li>
+                <li><a href="/students" th:text="#{nav.students}">Студенты</a></li>
+                <li><a href="/courses" th:text="#{nav.courses}">Курсы</a></li>
+                <li><a href="/teachers" th:text="#{nav.teachers}">Преподаватели</a></li>
+                <li><a href="/reports" th:text="#{nav.reports}">Отчёты</a></li>
+                <li><a href="/profile" th:text="#{nav.profile}">Профиль</a></li>
+            </ul>
+        </nav>
+        <div style="margin-left: auto;">
+    <a th:href="@{/change-lang(lang='ru')}" >🇷🇺 Рус</a> |
+<a th:href="@{/change-lang(lang='en')}" >🇬🇧 Eng</a>
+
+
+</div>
+
+    </header>
+
+    <main>
+        <h1 th:text="#{students.title}">Список студентов</h1>
+
+        <p th:text="${message}" style="color: green;"></p>
+
+        <table border="1">
+            <tr>
+                <th th:text="#{student.id}">ID</th>
+                <th th:text="#{student.name}">Имя</th>
+                <th th:text="#{student.email}">Email</th>
+                <th th:text="#{student.group}">Группа</th>
+                <th th:text="#{student.grade}">Оценка</th>
+                <th th:text="#{student.actions}">Действия</th>
+            </tr>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.email}"></td>
+                <td th:text="${student.groupName}"></td>
+                <td th:text="${student.grade}"></td>
+                <td>
+                    <span th:if="${isAdmin}">
+                        <a th:href="@{'/students/delete/' + ${student.id}}"
+                           onclick="return confirm(/*[[#{student.confirmDelete}]]*/'Удалить студента?')" 
+                           class="button-red" 
+                           th:text="#{student.delete}">Удалить</a>
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+        <span th:if="${isAdmin}">
+            <h2 th:text="#{student.add}">Добавить студента</h2>
+            <form th:action="@{/students}" th:object="${student}" method="post">
+                <input type="text" th:field="*{name}" th:placeholder="#{student.name}" required />
+                <input type="email" th:field="*{email}" th:placeholder="#{student.email}" required />
+                <input type="text" th:field="*{groupName}" th:placeholder="#{student.group}" />
+                <input type="text" th:field="*{grade}" th:placeholder="#{student.grade}" />
+
+
+                <button type="submit" th:text="#{button.save}">Сохранить</button>
+            </form>
+
+            <h2 th:text="#{student.importExcel}">Импорт студентов из Excel</h2>
+            <form th:action="@{/students/import/excel}" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".xlsx" required/>
+                <button type="submit" th:text="#{button.uploadFile}">Загрузить файл</button>
+            </form>
+
+            <h2 th:text="#{student.exportExcel}">Экспорт студентов в Excel</h2>
+            <form th:action="@{/students/export/excel}" method="get">
+                <button type="submit" th:text="#{button.downloadExcel}">Скачать Excel</button>
+            </form>
+        </span>
+    </main>
+
+</body>
+</html>

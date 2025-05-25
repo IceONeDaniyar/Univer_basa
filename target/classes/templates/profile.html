@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{profile.title}">Профиль</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/css/profile.css" />
+</head>
+<body>
+    <h1>
+        <span th:text="#{profile.welcome}">Добро пожаловать</span>, 
+        <span th:text="${username}">Пользователь</span>!
+    </h1>
+    
+    <div class="button-group">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" th:text="#{profile.logout}">Выйти</button>
+        </form>
+
+        <a href="/">
+            <button type="button" th:text="#{profile.back}">Назад</button>
+        </a>
+    </div>
+</body>
+</html>

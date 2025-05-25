@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{upload.title}">Загрузить книгу</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+</head>
+<body>
+
+<form method="post" enctype="multipart/form-data" th:action="@{/books/upload}">
+    <h2 th:text="#{upload.header}">Загрузить книгу</h2>
+
+    <label for="title" th:text="#{upload.label.title}">Название книги:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="uploader" th:text="#{upload.label.uploader}">Преподаватель:</label>
+    <input type="text" id="uploader" name="uploader" required>
+
+    <label for="category" th:text="#{upload.label.category}">Категория:</label>
+    <input type="text" id="category" name="category" required>
+
+    <label for="file" th:text="#{upload.label.file}">Файл книги:</label>
+    <input type="file" id="file" name="file" required>
+
+    <button type="submit" th:text="#{upload.button.submit}">Загрузить</button>
+
+    <a href="/reports" class="button" th:text="#{upload.button.back}">← Назад</a>
+</form>
+
+</body>
+</html>

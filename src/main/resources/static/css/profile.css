@@ -1,0 +1,47 @@
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: #e74c3c;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #c0392b;
+}
+
+button[type="button"] {
+    background-color: #3498db;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #2980b9;
+}
